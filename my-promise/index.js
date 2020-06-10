@@ -31,14 +31,11 @@ document.addEventListener('DOMContentLoaded', function () {
           instance.__state = FULLFILLED;
           instance.__value = resolvedValue;
           while (instance.__successHandlers.length) {
-            console.log('instance in while', instance);
             const param = instance.__value;
             const handler = instance.__successHandlers.shift();
             const prevResovledValue = handler(param);
             if (prevResovledValue instanceof MyPromise) {
-              console.log('resolved by promise => ', prevResovledValue);
               const asyncResolvedValue = await prevResovledValue;
-              console.log('asyncResolvedValue', asyncResolvedValue);
               instance.__value = asyncResolvedValue;
             } else {
               instance.__value = prevResovledValue;
