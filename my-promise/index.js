@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
    */
 
   const PENDING = 'pending';
-  const FULLFILLED = 'fullfilled';
+  const FULFILLED = 'fulfilled';
   const REJECTED = 'rejected';
   class MyPromise {
     constructor(register) {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
       this.__value = undefined;
       const instance = this;
       const __resolve = async function (resolvedValue) {
-        if (instance.__state === PENDING || instance.__state === FULLFILLED) {
+        if (instance.__state === PENDING || instance.__state === FULFILLED) {
           instance.__state = FULLFILLED;
           instance.__value = resolvedValue;
           while (instance.__successHandlers.length) {
