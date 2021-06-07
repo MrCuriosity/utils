@@ -1,29 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const type = source => Object.prototype.toString.call(source).split(' ')[1].slice(0, -1);
-
   const debounce = function(fn, timeout) {
-    let self = null;
-    let args = [];
-    let func = null;
-    let result = null;
     let timer = null;
+    let context = null;
 
-    func = function() {
-      self = this;
-      args = arguments;
-      clearTimeout(timer);
+    const debouncedFunction = function(...args) {
+      context = this;
+      if (timer) {
+        clearTimeout(timer);
+      }
       timer = setTimeout(() => {
-        result = fn.apply(self, args);
+        fn && fn.call(context, ...args)
         timer = null;
-        return result;
       }, timeout);
     }
 
-    return func;
+    debouncedFunction.displayName = 'debouncedFunction';
+    return debouncedFunction;
   };
 
-  const testFunc = param => console.log('clicked param: ', param);
+  const testFunc = param => console.log('clicked param: ', param.target);
   const debounced = debounce(testFunc, 1000);
 
   document.querySelector('.btn-primary').addEventListener('click', debounced);
+  document.querySelector('.btn-secondary').addEventListener('click', debounced);
 });
